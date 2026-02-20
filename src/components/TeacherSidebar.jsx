@@ -1,0 +1,196 @@
+import { useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import {
+  LayoutDashboard,
+  Users,
+  BookOpen,
+  ClipboardCheck,
+  BarChart3,
+  MessageSquare,
+  FileText,
+  GraduationCap,
+  LogOut,
+} from "lucide-react";
+
+export default function TeacherSidebar() {
+  const [isOpen, setIsOpen] = useState(true);
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const navItem =
+    "flex items-center gap-3 rounded-lg px-3 py-2 transition relative";
+
+  const activeStyle =
+    "bg-blue-50 text-blue-700 font-semibold before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-blue-600 before:rounded-r";
+
+  const normalStyle = "text-gray-600 hover:bg-gray-100";
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
+  return (
+    <aside className="flex h-screen w-64 flex-col border-r bg-white p-4">
+      {/* ===== LOGO / TITLE ===== */}
+      <h2 className="mb-4 text-xl font-bold tracking-tight">
+        🎓 Teacher Panel
+      </h2>
+
+      {/* ===== USER INFO ===== */}
+      {user?.name && (
+        <div className="mb-6 p-3 bg-blue-50 rounded-lg border border-blue-200">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold">
+              {user.name.charAt(0)}
+            </div>
+            <div className="flex-1">
+              <p className="font-medium text-sm text-gray-800">{user.name}</p>
+              <p className="text-xs text-gray-600">
+                {user.subject || user.email || "Teacher"}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <nav className="flex flex-col gap-1 text-sm flex-1">
+        {/* ================= OVERVIEW ================= */}
+        <Section title="OVERVIEW" />
+
+        <NavLink
+          to="/teacher/dashboard"
+          className={({ isActive }) =>
+            `${navItem} ${isActive ? activeStyle : normalStyle}`
+          }
+        >
+          <LayoutDashboard size={18} />
+          Dashboard
+        </NavLink>
+
+        {/* ================= CLASSES ================= */}
+        <Section title="CLASSES" />
+
+        <NavLink
+          to="/teacher/classes"
+          className={({ isActive }) =>
+            `${navItem} ${isActive ? activeStyle : normalStyle}`
+          }
+        >
+          <BookOpen size={18} />
+          Classes
+        </NavLink>
+
+        <NavLink
+          to="/teacher/classoverview"
+          className={({ isActive }) =>
+            `${navItem} ${isActive ? activeStyle : normalStyle}`
+          }
+        >
+          <GraduationCap size={18} />
+          Class Overview
+        </NavLink>
+
+        {/* ================= STUDENTS ================= */}
+        <Section title="STUDENTS" />
+
+        <NavLink
+          to="/teacher/student"
+          className={({ isActive }) =>
+            `${navItem} ${isActive ? activeStyle : normalStyle}`
+          }
+        >
+          <Users size={18} />
+          Student List
+        </NavLink>
+
+        <NavLink
+          to="/teacher/studentdetails"
+          className={({ isActive }) =>
+            `${navItem} ${isActive ? activeStyle : normalStyle}`
+          }
+        >
+          <FileText size={18} />
+          Student Details
+        </NavLink>
+
+        {/* ================= MANAGEMENT ================= */}
+        <Section title="MANAGEMENT" />
+
+        <NavLink
+          to="/teacher/attendence"
+          className={({ isActive }) =>
+            `${navItem} ${isActive ? activeStyle : normalStyle}`
+          }
+        >
+          <ClipboardCheck size={18} />
+          Attendance
+        </NavLink>
+
+        <NavLink
+          to="/teacher/marks"
+          className={({ isActive }) =>
+            `${navItem} ${isActive ? activeStyle : normalStyle}`
+          }
+        >
+          <BarChart3 size={18} />
+          Marks
+        </NavLink>
+
+        <NavLink
+          to="/teacher/performance"
+          className={({ isActive }) =>
+            `${navItem} ${isActive ? activeStyle : normalStyle}`
+          }
+        >
+          <BarChart3 size={18} />
+          Performance
+        </NavLink>
+
+        <NavLink
+          to="/teacher/remarks"
+          className={({ isActive }) =>
+            `${navItem} ${isActive ? activeStyle : normalStyle}`
+          }
+        >
+          <FileText size={18} />
+          Remarks
+        </NavLink>
+
+        {/* ================= COMMUNICATION ================= */}
+        <Section title="COMMUNICATION" />
+
+        <NavLink
+          to="/teacher/messages"
+          className={({ isActive }) =>
+            `${navItem} ${isActive ? activeStyle : normalStyle}`
+          }
+        >
+          <MessageSquare size={18} />
+          Parent Messages
+        </NavLink>
+      </nav>
+
+      {/* ================= LOGOUT ================= */}
+      <div className="border-t pt-4">
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center gap-2 rounded-lg bg-red-500 text-white px-3 py-2 hover:bg-red-600 transition font-medium"
+        >
+          <LogOut size={18} />
+          Logout
+        </button>
+      </div>
+    </aside>
+  );
+}
+
+/* ===== SMALL SECTION TITLE COMPONENT ===== */
+function Section({ title }) {
+  return (
+    <p className="mt-4 mb-1 px-2 text-xs font-semibold text-gray-400">
+      {title}
+    </p>
+  );
+}
