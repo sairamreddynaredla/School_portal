@@ -27,6 +27,20 @@ export function SchoolProvider({ children }) {
   const [typingUser, setTypingUser] = useState(null);
 
   /* ===================================================
+     🔔 GLOBAL ALERTS STATE  ⭐ NEW
+  =================================================== */
+
+  const [alerts, setAlerts] = useState([
+    {
+      id: 1,
+      type: "info",
+      title: "Attendance Updated",
+      message: "Rahul marked present today",
+      time: "Just now",
+    },
+  ]);
+
+  /* ===================================================
      ⭐ MAIN UNIVERSAL UPDATE FUNCTION
   =================================================== */
 
@@ -61,10 +75,7 @@ export function SchoolProvider({ children }) {
             .map(([, value]) => value);
 
           if (performanceValues.length > 0) {
-            const total = performanceValues.reduce(
-              (a, b) => a + b,
-              0
-            );
+            const total = performanceValues.reduce((a, b) => a + b, 0);
 
             const percentage = Math.round(
               total / performanceValues.length
@@ -75,8 +86,7 @@ export function SchoolProvider({ children }) {
             else if (percentage >= 75) grade = "A";
             else if (percentage >= 60) grade = "B";
 
-            updatedStudent.performance.percentage =
-              percentage;
+            updatedStudent.performance.percentage = percentage;
             updatedStudent.performance.grade = grade;
           }
         }
@@ -116,20 +126,25 @@ export function SchoolProvider({ children }) {
      ⭐ ATTENDANCE UPDATE
   =================================================== */
 
-  // Mark attendance for a student for a specific date (add if not exists, update if exists)
   const markAttendance = (studentId, status) => {
-    const today = new Date().toLocaleDateString("en-CA"); // yyyy-mm-dd
+    const today = new Date().toLocaleDateString("en-CA");
+
     setStudents((prevStudents) =>
       prevStudents.map((student) => {
         if (student.id !== studentId) return student;
-        // Check if today's record exists
-        const attendance = Array.isArray(student.attendance) ? [...student.attendance] : [];
+
+        const attendance = Array.isArray(student.attendance)
+          ? [...student.attendance]
+          : [];
+
         const idx = attendance.findIndex((a) => a.date === today);
+
         if (idx !== -1) {
           attendance[idx].status = status;
         } else {
           attendance.push({ date: today, status });
         }
+
         return { ...student, attendance };
       })
     );
@@ -155,12 +170,10 @@ export function SchoolProvider({ children }) {
 
     setMessages((prev) => [...prev, newMessage]);
 
-    // ⭐ Increase unread badge when parent sends
     if (sender === "parent") {
       setUnreadCount((prev) => prev + 1);
     }
 
-    // reset typing indicator
     setTypingUser(null);
   };
 
@@ -176,13 +189,17 @@ export function SchoolProvider({ children }) {
     updateMarks,
     markAttendance,
 
-    // 💬 CHAT STATE
+    // 💬 CHAT
     messages,
     sendMessage,
     unreadCount,
     setUnreadCount,
     typingUser,
     setTypingUser,
+
+    // 🔔 ALERTS ⭐ NEW
+    alerts,
+    setAlerts,
   };
 
   return (
@@ -196,9 +213,7 @@ export function SchoolProvider({ children }) {
 export const useSchool = () => {
   const context = useContext(SchoolContext);
   if (!context) {
-    throw new Error(
-      "useSchool must be used within SchoolProvider"
-    );
+    throw new Error("useSchool must be used within SchoolProvider");
   }
   return context;
 };
