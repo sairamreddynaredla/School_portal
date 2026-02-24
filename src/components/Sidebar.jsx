@@ -14,7 +14,6 @@ import {
 
 const notificationCount = 3;
 
-// 🎨 Active link style
 const navClass = ({ isActive }) =>
   `flex items-center gap-3 px-4 py-2 rounded transition ${
     isActive
@@ -26,7 +25,6 @@ export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(true);
   const { user } = useAuth();
 
-  // 👨‍👩‍👧 Parent Menu
   const parentMenu = [
     { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
     { name: "Attendance", path: "/attendance", icon: CalendarCheck },
@@ -38,7 +36,6 @@ export default function Sidebar() {
     { name: "Notifications", path: "/notifications", icon: Bell },
   ];
 
-  // 👨‍🏫 Teacher Menu (✅ Students removed)
   const teacherMenu = [
     { name: "Dashboard", path: "/teacher/dashboard", icon: LayoutDashboard },
     { name: "Attendance", path: "/teacher/attendance", icon: CalendarCheck },
@@ -47,39 +44,41 @@ export default function Sidebar() {
     { name: "Messages", path: "/teacher/messages", icon: MessageSquare },
   ];
 
-  // 🔁 Choose menu based on role
-  const menuItems = user?.role === "teacher" ? teacherMenu : parentMenu;
+  const menuItems =
+    user?.role === "teacher" ? teacherMenu : parentMenu;
 
   return (
     <aside
-      className={`bg-white shadow border-r p-4 min-h-screen transition-all duration-300 flex flex-col ${
+      className={`flex min-h-screen flex-col border-r bg-white p-4 shadow transition-all duration-300 ${
         isOpen ? "w-64" : "w-20"
       }`}
     >
-      {/* Header */}
-      <div className="p-4 border-b flex items-center justify-between">
+      <div className="flex items-center justify-between border-b p-4">
         {isOpen && (
           <h2 className="text-xl font-bold">
-            {user?.role === "teacher" ? "Teacher Panel" : "Parent Panel"}
+            {user?.role === "teacher"
+              ? "Teacher Panel"
+              : "Parent Panel"}
           </h2>
         )}
+
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="p-1 rounded hover:bg-gray-200"
+          className="rounded p-1 hover:bg-gray-200"
         >
           ☰
         </button>
       </div>
 
-      {/* User Info */}
       {isOpen && user?.name && (
-        <div className="p-4 border-b bg-blue-50">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold">
+        <div className="border-b bg-blue-50 p-4">
+          <div className="mb-2 flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 font-bold text-white">
               {user.name.charAt(0)}
             </div>
+
             <div>
-              <p className="font-medium text-sm text-gray-800">
+              <p className="text-sm font-medium text-gray-800">
                 {user.name}
               </p>
               <p className="text-xs text-gray-600">
@@ -90,8 +89,7 @@ export default function Sidebar() {
         </div>
       )}
 
-      {/* Menu */}
-      <nav className="p-2 space-y-1 flex-1">
+      <nav className="flex-1 space-y-1 p-2">
         {menuItems.map((item) => {
           const Icon = item.icon;
 
@@ -101,11 +99,10 @@ export default function Sidebar() {
 
               {isOpen && <span className="flex-1">{item.name}</span>}
 
-              {/* Notification Badge */}
               {item.name === "Notifications" &&
                 isOpen &&
                 notificationCount > 0 && (
-                  <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
+                  <span className="rounded-full bg-red-500 px-2 py-0.5 text-xs text-white">
                     {notificationCount}
                   </span>
                 )}

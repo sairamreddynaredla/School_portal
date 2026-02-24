@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import useActiveStudent from "../../hooks/useActiveStudent";
 import {
   BarChart3,
@@ -6,7 +6,6 @@ import {
   Clock,
   Award,
   AlertCircle,
-  CheckCircle,
 } from "lucide-react";
 import AttendanceCalendar from "./AttendanceCalendar";
 import WeeklyProgress from "./WeeklyProgress";
@@ -16,49 +15,56 @@ import Notifications from "./Notifications";
 
 export default function ParentDashboard() {
   const student = useActiveStudent();
-  const [stats, setStats] = useState({
-    attendance: 0,
-    overallGrade: "-",
-    avgMarks: 0,
-    recentAlerts: 0,
-  });
 
-  useEffect(() => {
-    if (student) {
-      const performance = student?.performance || {};
-      const attendanceData = student?.attendance || [];
-      
-      const presentCount = attendanceData.filter(
-        (a) => a.status === "Present"
-      ).length;
-      const attendancePercent = attendanceData.length > 0
-        ? Math.round((presentCount / attendanceData.length) * 100)
+  const stats = useMemo(() => {
+    if (!student) {
+      return {
+        attendance: 0,
+        overallGrade: "-",
+        avgMarks: 0,
+        recentAlerts: 0,
+      };
+    }
+
+    const performance = student?.performance || {};
+    const attendanceData = student?.attendance || [];
+
+    const presentCount = attendanceData.filter(
+      (a) => a.status === "Present"
+    ).length;
+
+    const attendancePercent =
+      attendanceData.length > 0
+        ? Math.round(
+            (presentCount / attendanceData.length) * 100
+          )
         : 0;
 
-      const subjects = Object.entries(performance).filter(
-        ([key]) => key !== "percentage" && key !== "grade"
-      );
-      const avgMarks = subjects.length > 0
+    const subjects = Object.entries(performance).filter(
+      ([key]) => key !== "percentage" && key !== "grade"
+    );
+
+    const avgMarks =
+      subjects.length > 0
         ? Math.round(
             subjects.reduce((sum, [, val]) => sum + val, 0) /
               subjects.length
           )
         : 0;
 
-      setStats({
-        attendance: attendancePercent,
-        overallGrade: performance.grade || "-",
-        avgMarks: avgMarks,
-        recentAlerts: 2,
-      });
-    }
+    return {
+      attendance: attendancePercent,
+      overallGrade: performance.grade || "-",
+      avgMarks,
+      recentAlerts: 2,
+    };
   }, [student]);
 
   if (!student) {
     return (
-      <div className="p-8 bg-gradient-to-br from-blue-50 to-indigo-50 min-h-screen">
-        <div className="max-w-7xl mx-auto">
-          <div className="rounded-lg bg-white p-6 shadow-sm text-center text-gray-500">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="rounded-lg bg-white p-6 text-center text-gray-500 shadow-sm">
             <p className="text-lg">No student selected</p>
           </div>
         </div>
@@ -80,119 +86,127 @@ export default function ParentDashboard() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-blue-50 via-white to-indigo-50 min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-8 space-y-8">
-
-        {/* ⭐ WELCOME HEADER */}
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+      <div className="mx-auto max-w-7xl space-y-8 px-4 py-8 md:px-8">
         <div>
           <h1 className="text-4xl font-bold text-gray-900">
             Welcome Back!
           </h1>
-          <p className="text-gray-600 mt-2">
-            Here's an overview of {student?.name}'s academic performance
+          <p className="mt-2 text-gray-600">
+            Here's an overview of {student?.name}'s academic
+            performance
           </p>
         </div>
 
-        {/* ⭐ STATS CARDS */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Attendance Card */}
-          <div className={`rounded-lg p-6 shadow-sm border transition-all hover:shadow-md ${getAttendanceColor(stats.attendance)}`}>
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div
+            className={`rounded-lg border p-6 shadow-sm transition-all hover:shadow-md ${getAttendanceColor(
+              stats.attendance
+            )}`}
+          >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium opacity-80">Attendance</p>
-                <p className="text-3xl font-bold mt-2">{stats.attendance}%</p>
-                <p className="text-xs opacity-70 mt-1">
-                  {stats.attendance >= 80 ? "✓ On Track" : "⚠ Needs Improvement"}
+                <p className="text-sm font-medium opacity-80">
+                  Attendance
+                </p>
+                <p className="mt-2 text-3xl font-bold">
+                  {stats.attendance}%
                 </p>
               </div>
-              <Clock className="w-12 h-12 opacity-20" />
+              <Clock className="h-12 w-12 opacity-20" />
             </div>
           </div>
 
-          {/* Grade Card */}
-          <div className={`rounded-lg p-6 shadow-sm border transition-all hover:shadow-md ${getGradeColor(stats.overallGrade)}`}>
+          <div
+            className={`rounded-lg border p-6 shadow-sm transition-all hover:shadow-md ${getGradeColor(
+              stats.overallGrade
+            )}`}
+          >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium opacity-80">Overall Grade</p>
-                <p className="text-3xl font-bold mt-2">{stats.overallGrade}</p>
-                <p className="text-xs opacity-70 mt-1">Latest Assessment</p>
+                <p className="text-sm font-medium opacity-80">
+                  Overall Grade
+                </p>
+                <p className="mt-2 text-3xl font-bold">
+                  {stats.overallGrade}
+                </p>
               </div>
-              <Award className="w-12 h-12 opacity-20" />
+              <Award className="h-12 w-12 opacity-20" />
             </div>
           </div>
 
-          {/* Average Marks Card */}
-          <div className="rounded-lg p-6 shadow-sm border bg-purple-50 text-purple-600 transition-all hover:shadow-md">
+          <div className="rounded-lg border bg-purple-50 p-6 text-purple-600 shadow-sm transition-all hover:shadow-md">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium opacity-80">Average Score</p>
-                <p className="text-3xl font-bold mt-2">{stats.avgMarks}%</p>
-                <p className="text-xs opacity-70 mt-1">Across Subjects</p>
+                <p className="text-sm font-medium opacity-80">
+                  Average Score
+                </p>
+                <p className="mt-2 text-3xl font-bold">
+                  {stats.avgMarks}%
+                </p>
               </div>
-              <BarChart3 className="w-12 h-12 opacity-20" />
+              <BarChart3 className="h-12 w-12 opacity-20" />
             </div>
           </div>
 
-          {/* Alerts Card */}
-          <div className="rounded-lg p-6 shadow-sm border bg-orange-50 text-orange-600 transition-all hover:shadow-md">
+          <div className="rounded-lg border bg-orange-50 p-6 text-orange-600 shadow-sm transition-all hover:shadow-md">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium opacity-80">Recent Updates</p>
-                <p className="text-3xl font-bold mt-2">{stats.recentAlerts}</p>
-                <p className="text-xs opacity-70 mt-1">Alerts This Week</p>
+                <p className="text-sm font-medium opacity-80">
+                  Recent Updates
+                </p>
+                <p className="mt-2 text-3xl font-bold">
+                  {stats.recentAlerts}
+                </p>
               </div>
-              <AlertCircle className="w-12 h-12 opacity-20" />
+              <AlertCircle className="h-12 w-12 opacity-20" />
             </div>
           </div>
         </div>
 
-        {/* ⭐ MAIN GRID LAYOUT */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-          {/* LEFT MAIN CONTENT */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Attendance Section */}
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          <div className="space-y-6 lg:col-span-2">
             <div className="rounded-lg border bg-white p-6 shadow-sm">
-              <div className="flex items-center gap-2 mb-4">
-                <Clock className="w-5 h-5 text-blue-600" />
-                <h2 className="text-lg font-semibold text-gray-900">Attendance Overview</h2>
+              <div className="mb-4 flex items-center gap-2">
+                <Clock className="h-5 w-5 text-blue-600" />
+                <h2 className="text-lg font-semibold text-gray-900">
+                  Attendance Overview
+                </h2>
               </div>
               <AttendanceCalendar />
             </div>
 
-            {/* Weekly Progress Section */}
             <div className="rounded-lg border bg-white p-6 shadow-sm">
-              <div className="flex items-center gap-2 mb-4">
-                <TrendingUp className="w-5 h-5 text-green-600" />
-                <h2 className="text-lg font-semibold text-gray-900">Performance Trends</h2>
+              <div className="mb-4 flex items-center gap-2">
+                <TrendingUp className="h-5 w-5 text-green-600" />
+                <h2 className="text-lg font-semibold text-gray-900">
+                  Performance Trends
+                </h2>
               </div>
               <WeeklyProgress />
             </div>
           </div>
 
-          {/* RIGHT SIDEBAR */}
           <div className="space-y-6 lg:sticky lg:top-8 lg:h-fit">
-            {/* Notifications */}
-            <div className="rounded-lg border bg-white shadow-sm overflow-hidden">
+            <div className="overflow-hidden rounded-lg border bg-white shadow-sm">
               <Notifications />
             </div>
 
-            {/* Messages */}
-            <div className="rounded-lg border bg-white shadow-sm overflow-hidden">
+            <div className="overflow-hidden rounded-lg border bg-white shadow-sm">
               <Messages />
             </div>
           </div>
         </div>
 
-        {/* ⭐ MARKSHEET SECTION */}
         <div className="rounded-lg border bg-white p-6 shadow-sm">
-          <div className="flex items-center gap-2 mb-4">
-            <Award className="w-5 h-5 text-purple-600" />
-            <h2 className="text-lg font-semibold text-gray-900">Academic Records</h2>
+          <div className="mb-4 flex items-center gap-2">
+            <Award className="h-5 w-5 text-purple-600" />
+            <h2 className="text-lg font-semibold text-gray-900">
+              Academic Records
+            </h2>
           </div>
           <Marksheet />
         </div>
-
       </div>
     </div>
   );

@@ -1,6 +1,5 @@
 import { students, parent } from "../data/dummydata";
 
-// simulate API call
 export const getStudents = async () => {
   return new Promise((resolve) => {
     setTimeout(() => resolve(students), 300);

@@ -1,12 +1,7 @@
 import { useSchool } from "../../context/SchoolContext";
 
 export default function Marks() {
-  // ⭐ Get live students data from context
   const { students } = useSchool();
-
-  /* ===================================================
-     📊 CALCULATE STATS DYNAMICALLY
-  =================================================== */
 
   const totalStudents = students.length;
 
@@ -28,31 +23,34 @@ export default function Marks() {
     percentages.length > 0 ? Math.min(...percentages) : 0;
 
   return (
-    <div className="p-6 max-w-6xl">
-      <h1 className="text-2xl font-bold mb-6">Marks</h1>
+    <div className="max-w-6xl p-6">
+      <h1 className="mb-6 text-2xl font-bold">
+        Marks
+      </h1>
 
-      {/* ===================================================
-         ⭐ STATS CARDS (NOW REAL DATA)
-      =================================================== */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+      <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-4">
         {[
           ["Total Students", totalStudents],
           ["Average Marks", `${averageMarks}%`],
           ["Highest Marks", `${highestMarks}%`],
           ["Lowest Marks", `${lowestMarks}%`],
         ].map(([label, value]) => (
-          <div key={label} className="bg-white p-4 rounded shadow">
-            <p className="text-gray-500 text-sm">{label}</p>
-            <p className="text-2xl font-bold">{value}</p>
+          <div
+            key={label}
+            className="rounded bg-white p-4 shadow"
+          >
+            <p className="text-sm text-gray-500">
+              {label}
+            </p>
+            <p className="text-2xl font-bold">
+              {value}
+            </p>
           </div>
         ))}
       </div>
 
-      {/* ===================================================
-         ⭐ STUDENT MARKS LIST (LIVE FROM CONTEXT)
-      =================================================== */}
-      <div className="bg-white rounded shadow">
-        <h2 className="text-lg font-semibold p-4 border-b">
+      <div className="rounded bg-white shadow">
+        <h2 className="border-b p-4 text-lg font-semibold">
           Student Marks Summary
         </h2>
 
@@ -62,8 +60,11 @@ export default function Marks() {
               student.performance?.percentage || 0;
 
             return (
-              <div key={student.id} className="p-4">
-                <div className="flex justify-between mb-2">
+              <div
+                key={student.id}
+                className="p-4"
+              >
+                <div className="mb-2 flex justify-between">
                   <p className="font-medium">
                     {student.name}
                   </p>
@@ -72,7 +73,7 @@ export default function Marks() {
                   </span>
                 </div>
 
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="h-2 w-full rounded-full bg-gray-200">
                   <div
                     className={`h-2 rounded-full ${
                       marks >= 75

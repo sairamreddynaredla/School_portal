@@ -29,38 +29,49 @@ export default function Messages() {
   }
 
   return (
-    <div className="w-full flex flex-col h-[70vh]">
-      {/* Header */}
-      <div className="mb-4 pb-4 border-b">
+    <div className="flex h-[70vh] w-full flex-col">
+      <div className="mb-4 border-b pb-4">
         <div className="flex items-center gap-3">
-          <MessageCircle className="w-6 h-6 text-blue-600" />
+          <MessageCircle className="h-6 w-6 text-blue-600" />
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">Messages</h2>
-            <p className="text-xs text-gray-600">Direct communication with teachers</p>
+            <h2 className="text-lg font-semibold text-gray-900">
+              Messages
+            </h2>
+            <p className="text-xs text-gray-600">
+              Direct communication with teachers
+            </p>
           </div>
         </div>
       </div>
 
-      {/* Chat Area */}
-      <div className="flex-1 overflow-y-auto space-y-3 mb-4 p-4 bg-gray-50 rounded-lg">
+      <div className="mb-4 flex-1 space-y-3 overflow-y-auto rounded-lg bg-gray-50 p-4">
         {chatMessages.length === 0 ? (
-          <div className="text-center py-8">
-            <MessageCircle className="w-10 h-10 text-gray-300 mx-auto mb-2" />
+          <div className="py-8 text-center">
+            <MessageCircle className="mx-auto mb-2 h-10 w-10 text-gray-300" />
             <p className="text-gray-500">No messages yet</p>
-            <p className="text-xs text-gray-400 mt-1">Start a conversation with your child's teacher</p>
+            <p className="mt-1 text-xs text-gray-400">
+              Start a conversation with your child's teacher
+            </p>
           </div>
         ) : (
           chatMessages.map((msg) => (
             <div
               key={msg.id}
-              className={`max-w-sm p-3 rounded-lg ${
+              className={`max-w-sm rounded-lg p-3 ${
                 msg.sender === "parent"
-                  ? "bg-blue-600 text-white ml-auto rounded-br-none"
-                  : "bg-white text-gray-900 mr-auto rounded-bl-none border border-gray-200"
+                  ? "ml-auto rounded-br-none bg-blue-600 text-white"
+                  : "mr-auto rounded-bl-none border border-gray-200 bg-white text-gray-900"
               }`}
             >
               <p className="text-sm">{msg.text}</p>
-              <span className={`text-xs opacity-70 mt-1 block ${msg.sender === "parent" ? "text-blue-100" : "text-gray-500"}`}>
+
+              <span
+                className={`mt-1 block text-xs opacity-70 ${
+                  msg.sender === "parent"
+                    ? "text-blue-100"
+                    : "text-gray-500"
+                }`}
+              >
                 {msg.time}
               </span>
             </div>
@@ -68,15 +79,16 @@ export default function Messages() {
         )}
 
         {typingUser === "teacher" && (
-          <div className="max-w-sm p-3 rounded-lg bg-white border border-gray-200 mr-auto">
-            <p className="text-xs text-gray-600">Teacher is typing...</p>
+          <div className="mr-auto max-w-sm rounded-lg border border-gray-200 bg-white p-3">
+            <p className="text-xs text-gray-600">
+              Teacher is typing...
+            </p>
           </div>
         )}
 
         <div ref={bottomRef} />
       </div>
 
-      {/* Input Area */}
       <div className="flex gap-2">
         <input
           value={text}
@@ -89,14 +101,15 @@ export default function Messages() {
             if (e.key === "Enter") handleSend();
           }}
           placeholder="Type your message here..."
-          className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+
         <button
           onClick={handleSend}
           disabled={!text.trim()}
-          className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-lg px-4 py-2 font-medium transition flex items-center gap-2"
+          className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 font-medium text-white transition hover:bg-blue-700 disabled:bg-gray-400"
         >
-          <Send className="w-4 h-4" />
+          <Send className="h-4 w-4" />
           Send
         </button>
       </div>

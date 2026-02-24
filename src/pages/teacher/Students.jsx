@@ -11,8 +11,7 @@ export default function Students() {
   });
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      {/* PAGE TITLE */}
+    <div className="min-h-screen bg-gray-100 p-6">
       <div className="mb-6">
         <h2 className="text-3xl font-bold">Students</h2>
         <p className="text-gray-600">
@@ -20,8 +19,7 @@ export default function Students() {
         </p>
       </div>
 
-      {/* STUDENTS TABLE */}
-      <div className="bg-white rounded-xl shadow overflow-x-auto">
+      <div className="overflow-x-auto rounded-xl bg-white shadow">
         <table className="w-full border-collapse">
           <thead>
             <tr className="bg-gray-50 text-left">
@@ -40,13 +38,16 @@ export default function Students() {
                 className="border-t hover:bg-gray-50"
               >
                 <td className="p-4">{student.id}</td>
+
                 <td className="p-4 font-medium">
                   {student.name}
                 </td>
+
                 <td className="p-4">{student.class}</td>
+
                 <td className="p-4">
                   <span
-                    className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                    className={`rounded-full px-3 py-1 text-sm font-semibold ${
                       (student.attendancePercentage || 0) < 75
                         ? "bg-red-100 text-red-700"
                         : "bg-green-100 text-green-700"
@@ -55,12 +56,13 @@ export default function Students() {
                     {student.attendancePercentage || 0}%
                   </span>
                 </td>
+
                 <td className="p-4">
                   <button
                     onClick={() =>
                       navigate(`/teacher/student/${student.id}`)
                     }
-                    className="text-blue-600 hover:underline font-medium"
+                    className="font-medium text-blue-600 hover:underline"
                   >
                     View
                   </button>

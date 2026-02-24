@@ -8,18 +8,15 @@ export default function Performance() {
   const [marks, setMarks] = useState({});
   const [message, setMessage] = useState("");
 
-  // ⭐ Find selected student from context
   const selectedStudent = students.find(
     (s) => s.id === Number(selectedStudentId)
   );
 
-  // ⭐ Use student performance OR local edited marks
   const currentMarks =
     Object.keys(marks).length > 0
       ? marks
       : selectedStudent?.performance || {};
 
-  // ⭐ Auto percentage
   const percentage = (() => {
     const values = Object.entries(currentMarks)
       .filter(
@@ -29,10 +26,11 @@ export default function Performance() {
 
     const total = values.reduce((a, b) => a + b, 0);
 
-    return values.length ? (total / values.length).toFixed(2) : 0;
+    return values.length
+      ? (total / values.length).toFixed(2)
+      : 0;
   })();
 
-  // ⭐ Auto grade
   const grade = (() => {
     if (percentage >= 90) return "A+";
     if (percentage >= 75) return "A";
@@ -59,14 +57,13 @@ export default function Performance() {
   };
 
   return (
-    <div className="p-6 max-w-4xl">
-      <h1 className="text-2xl font-bold mb-6">
+    <div className="max-w-4xl p-6">
+      <h1 className="mb-6 text-2xl font-bold">
         Student Performance Entry
       </h1>
 
-      {/* Student Selection */}
       <div className="mb-4">
-        <label className="block mb-1 font-medium">
+        <label className="mb-1 block font-medium">
           Select Student
         </label>
 
@@ -74,31 +71,36 @@ export default function Performance() {
           value={selectedStudentId}
           onChange={(e) => {
             setSelectedStudentId(e.target.value);
-            setMarks({}); // reset edits when student changes
+            setMarks({});
           }}
-          className="w-full border rounded px-3 py-2"
+          className="w-full rounded border px-3 py-2"
         >
-          <option value="">-- Choose Student --</option>
+          <option value="">
+            -- Choose Student --
+          </option>
 
           {students.map((student) => (
-            <option key={student.id} value={student.id}>
+            <option
+              key={student.id}
+              value={student.id}
+            >
               {student.name}
             </option>
           ))}
         </select>
       </div>
 
-      {/* ⭐ Dynamic Marks Inputs */}
       {selectedStudent && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
           {Object.entries(currentMarks)
             .filter(
               ([key]) =>
-                key !== "percentage" && key !== "grade"
+                key !== "percentage" &&
+                key !== "grade"
             )
             .map(([subject, value]) => (
               <div key={subject}>
-                <label className="block mb-1 capitalize">
+                <label className="mb-1 block capitalize">
                   {subject}
                 </label>
 
@@ -111,19 +113,20 @@ export default function Performance() {
                       [subject]: e.target.value,
                     }))
                   }
-                  className="w-full border rounded px-3 py-2"
+                  className="w-full rounded border px-3 py-2"
                 />
               </div>
             ))}
         </div>
       )}
 
-      {/* Result */}
       {selectedStudent && (
-        <div className="bg-gray-100 p-4 rounded mb-6">
+        <div className="mb-6 rounded bg-gray-100 p-4">
           <p className="text-lg">
-            Percentage: <strong>{percentage}%</strong>
+            Percentage:
+            <strong> {percentage}%</strong>
           </p>
+
           <p className="text-lg">
             Grade:{" "}
             <strong
@@ -139,10 +142,9 @@ export default function Performance() {
         </div>
       )}
 
-      {/* Save Button */}
       <button
         onClick={handleSave}
-        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded"
+        className="rounded bg-blue-600 px-6 py-2 text-white hover:bg-blue-700"
       >
         Save Performance
       </button>

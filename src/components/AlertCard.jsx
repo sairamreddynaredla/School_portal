@@ -1,13 +1,16 @@
-import{ ALERT_CONFIG } from "../constants/alertconfig";
+import { ALERT_CONFIG } from "../constants/alertconfig";
 
 export default function AlertCard({ alert }) {
-  // ✅ Safe fallback prevents undefined crash in build
+  /* --------------------------------------------------
+     Safe fallback values
+     -------------------------------------------------- */
   const type = alert?.type || "info";
   const config = ALERT_CONFIG[type] || ALERT_CONFIG.info;
 
   return (
     <div
-      className={`group relative flex items-start gap-4 rounded-xl border p-5 shadow-sm hover:shadow-md transition-all duration-300 ${config.style}`}
+      className={`group relative flex items-start gap-4 rounded-xl border p-5 
+      shadow-sm transition-all duration-300 hover:shadow-md ${config.style}`}
     >
       {/* Left Accent Bar */}
       <div className="absolute left-0 top-0 h-full w-1 rounded-l-xl bg-gray-300" />
@@ -24,21 +27,21 @@ export default function AlertCard({ alert }) {
             {alert?.title || "Alert"}
           </h2>
 
-          <span className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600 capitalize">
+          <span className="rounded-full bg-gray-100 px-2 py-1 text-xs capitalize text-gray-600">
             {type}
           </span>
         </div>
 
-        <p className="text-sm text-gray-600 mt-1 leading-relaxed">
+        <p className="mt-1 text-sm leading-relaxed text-gray-600">
           {alert?.message || ""}
         </p>
 
-        <div className="flex items-center justify-between mt-3">
+        <div className="mt-3 flex items-center justify-between">
           <p className="text-xs text-gray-400">
             {alert?.time || ""}
           </p>
 
-          <button className="opacity-0 group-hover:opacity-100 text-xs text-blue-600 transition">
+          <button className="text-xs text-blue-600 opacity-0 transition group-hover:opacity-100">
             View
           </button>
         </div>

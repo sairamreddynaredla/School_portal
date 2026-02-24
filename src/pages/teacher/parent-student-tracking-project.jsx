@@ -1,5 +1,4 @@
 export default function Students() {
-  // Dummy students stats (later from backend)
   const studentStats = {
     totalStudents: 30,
     averageAttendance: 82,
@@ -35,45 +34,51 @@ export default function Students() {
   ];
 
   return (
-    <div className="p-6 max-w-6xl">
-      <h1 className="text-2xl font-bold mb-6">
+    <div className="max-w-6xl p-6">
+      <h1 className="mb-6 text-2xl font-bold">
         Students
       </h1>
 
-      {/* Top Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        <div className="bg-white dark:bg-gray-800 p-4 rounded shadow">
-          <p className="text-gray-500 text-sm">Total Students</p>
+      <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-4">
+        <div className="rounded bg-white p-4 shadow dark:bg-gray-800">
+          <p className="text-sm text-gray-500">
+            Total Students
+          </p>
           <p className="text-2xl font-bold">
             {studentStats.totalStudents}
           </p>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 p-4 rounded shadow">
-          <p className="text-gray-500 text-sm">Avg Attendance</p>
+        <div className="rounded bg-white p-4 shadow dark:bg-gray-800">
+          <p className="text-sm text-gray-500">
+            Avg Attendance
+          </p>
           <p className="text-2xl font-bold text-blue-600">
             {studentStats.averageAttendance}%
           </p>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 p-4 rounded shadow">
-          <p className="text-gray-500 text-sm">Avg Performance</p>
+        <div className="rounded bg-white p-4 shadow dark:bg-gray-800">
+          <p className="text-sm text-gray-500">
+            Avg Performance
+          </p>
           <p className="text-2xl font-bold text-green-600">
             {studentStats.averagePerformance}%
           </p>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 p-4 rounded shadow">
-          <p className="text-gray-500 text-sm">Low Attendance</p>
+        <div className="rounded bg-white p-4 shadow dark:bg-gray-800">
+          <p className="text-sm text-gray-500">
+            Low Attendance
+          </p>
           <p className="text-2xl font-bold text-red-600">
             {studentStats.lowAttendanceCount}
           </p>
         </div>
       </div>
 
-      {/* Students List */}
-      <div className="bg-white dark:bg-gray-900 rounded shadow">
-        <h2 className="text-lg font-semibold p-4 border-b">
+      <div className="rounded bg-white shadow dark:bg-gray-900">
+        <h2 className="border-b p-4 text-lg font-semibold">
           Student Performance Summary
         </h2>
 

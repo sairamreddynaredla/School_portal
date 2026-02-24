@@ -4,8 +4,10 @@ import { useAuth } from "./context/AuthContext";
 import Login from "./pages/auth/Login";
 import DashboardLayout from "./layouts/DashboardLayout";
 import TeacherLayout from "./layouts/TeacherLayout";
+
 import ParentDashboard from "./pages/parent/Dashboard";
 import TeacherDashboard from "./pages/teacher/Dashboard";
+
 import AttendanceCalendar from "./pages/parent/AttendanceCalendar";
 import WeeklyProgress from "./pages/parent/WeeklyProgress";
 import Marksheet from "./pages/parent/Marksheet";
@@ -13,6 +15,7 @@ import Alerts from "./pages/parent/Alerts";
 import ExamResult from "./pages/parent/ExamResult";
 import Messages from "./pages/parent/Messages";
 import Notifications from "./pages/parent/Notifications";
+
 import TeacherAttendance from "./pages/teacher/Attendance";
 import TeacherClasses from "./pages/teacher/Classes";
 import TeacherMarks from "./pages/teacher/Marks";
@@ -22,50 +25,33 @@ import TeacherMessages from "./pages/teacher/Messages";
 import ClassOverView from "./pages/teacher/ClassOverView";
 import Remarks from "./pages/teacher/Remarks";
 
-
-// 🔐 Protected Route Wrapper
 const Protected = ({ children, allow }) => {
   const { user } = useAuth();
 
-  // ❌ Not logged in
   if (!user) return <Navigate to="/login" />;
-
-  // ❌ Wrong role trying to access
-  if (allow && user.role !== allow) {
-    return <Navigate to="/" />;
-  }
+  if (allow && user.role !== allow) return <Navigate to="/" />;
 
   return children;
 };
 
-
-// 🔁 Auto role redirect ("/" → correct dashboard)
 const RoleRedirect = () => {
   const { user } = useAuth();
 
-  // First check: if no user, must login
   if (!user) return <Navigate to="/login" replace />;
+  if (user.role === "teacher")
+    return <Navigate to="/teacher/dashboard" replace />;
+  if (user.role === "parent")
+    return <Navigate to="/parent/dashboard" replace />;
 
-  // Second check: redirect based on role
-  if (user.role === "teacher") return <Navigate to="/teacher/dashboard" replace />;
-
-  if (user.role === "parent") return <Navigate to="/parent/dashboard" replace />;
-
-  // Fallback: no valid role, go to login
   return <Navigate to="/login" replace />;
 };
-
 
 export default function App() {
   return (
     <Routes>
-      {/* Login */}
       <Route path="/login" element={<Login />} />
-
-      {/* Root redirect */}
       <Route path="/" element={<RoleRedirect />} />
 
-      {/* 👨‍👩‍👧 Parent Routes */}
       <Route
         path="/parent"
         element={
@@ -85,7 +71,6 @@ export default function App() {
         <Route path="notifications" element={<Notifications />} />
       </Route>
 
-      {/* Redirect /dashboard to /parent */}
       <Route path="/dashboard" element={<Navigate to="/parent" replace />} />
       <Route path="/attendance" element={<Navigate to="/parent/attendance" replace />} />
       <Route path="/weekly-progress" element={<Navigate to="/parent/weekly-progress" replace />} />
@@ -95,7 +80,6 @@ export default function App() {
       <Route path="/messages" element={<Navigate to="/parent/messages" replace />} />
       <Route path="/notifications" element={<Navigate to="/parent/notifications" replace />} />
 
-      {/* 👨‍🏫 Teacher Routes */}
       <Route
         path="/teacher"
         element={
@@ -118,10 +102,11 @@ export default function App() {
         <Route path="messages" element={<TeacherMessages />} />
       </Route>
 
-      {/* Redirect teacher routes */}
-      <Route path="/teacher/dashboard" element={<Navigate to="/teacher" replace />} />
+      <Route
+        path="/teacher/dashboard"
+        element={<Navigate to="/teacher" replace />}
+      />
 
-      {/* Catch-all: redirect to login */}
       <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );

@@ -17,10 +17,10 @@ export default function TeacherSidebar() {
   const navigate = useNavigate();
 
   const navItem =
-    "flex items-center gap-3 rounded-lg px-3 py-2 transition relative";
+    "relative flex items-center gap-3 rounded-lg px-3 py-2 transition";
 
   const activeStyle =
-    "bg-blue-50 text-blue-700 font-semibold before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-blue-600 before:rounded-r";
+    "bg-blue-50 text-blue-700 font-semibold before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:rounded-r before:bg-blue-600";
 
   const normalStyle = "text-gray-600 hover:bg-gray-100";
 
@@ -31,20 +31,21 @@ export default function TeacherSidebar() {
 
   return (
     <aside className="flex h-screen w-64 flex-col border-r bg-white p-4">
-      {/* ===== LOGO / TITLE ===== */}
       <h2 className="mb-4 text-xl font-bold tracking-tight">
         🎓 Teacher Panel
       </h2>
 
-      {/* ===== USER INFO ===== */}
       {user?.name && (
-        <div className="mb-6 p-3 bg-blue-50 rounded-lg border border-blue-200">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold">
+        <div className="mb-6 rounded-lg border border-blue-200 bg-blue-50 p-3">
+          <div className="mb-2 flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 font-bold text-white">
               {user.name.charAt(0)}
             </div>
+
             <div className="flex-1">
-              <p className="font-medium text-sm text-gray-800">{user.name}</p>
+              <p className="text-sm font-medium text-gray-800">
+                {user.name}
+              </p>
               <p className="text-xs text-gray-600">
                 {user.subject || user.email || "Teacher"}
               </p>
@@ -53,7 +54,7 @@ export default function TeacherSidebar() {
         </div>
       )}
 
-      <nav className="flex flex-col gap-1 text-sm flex-1">
+      <nav className="flex flex-1 flex-col gap-1 text-sm">
         <Section title="OVERVIEW" />
 
         <NavLink
@@ -158,7 +159,7 @@ export default function TeacherSidebar() {
       <div className="border-t pt-4">
         <button
           onClick={handleLogout}
-          className="w-full flex items-center gap-2 rounded-lg bg-red-500 text-white px-3 py-2 hover:bg-red-600 transition font-medium"
+          className="flex w-full items-center gap-2 rounded-lg bg-red-500 px-3 py-2 font-medium text-white transition hover:bg-red-600"
         >
           <LogOut size={18} />
           Logout

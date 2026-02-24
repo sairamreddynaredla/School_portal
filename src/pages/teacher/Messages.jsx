@@ -2,10 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { useSchool } from "../../context/SchoolContext";
 
 export default function Messages() {
-  /* ===================================================
-     ⭐ GET GLOBAL CHAT STATE
-  =================================================== */
-
   const {
     messages,
     sendMessage,
@@ -17,10 +13,6 @@ export default function Messages() {
 
   const [text, setText] = useState("");
 
-  /* ===================================================
-     ⭐ AUTO SCROLL (WhatsApp Feel)
-  =================================================== */
-
   const bottomRef = useRef(null);
 
   useEffect(() => {
@@ -29,25 +21,13 @@ export default function Messages() {
     });
   }, [messages]);
 
-  /* ===================================================
-     ⭐ RESET UNREAD COUNT WHEN TEACHER OPENS CHAT
-  =================================================== */
-
   useEffect(() => {
     setUnreadCount(0);
   }, [setUnreadCount]);
 
-  /* ===================================================
-     ⭐ FILTER CHAT BY ACTIVE STUDENT
-  =================================================== */
-
   const chatMessages = messages.filter(
     (m) => m.studentId === activeStudentId
   );
-
-  /* ===================================================
-     💬 SEND MESSAGE (TEACHER SIDE)
-  =================================================== */
 
   const handleSend = () => {
     sendMessage("teacher", text, activeStudentId);
@@ -55,22 +35,18 @@ export default function Messages() {
   };
 
   return (
-    <div className="p-6 max-w-4xl flex flex-col h-[80vh]">
-      <h1 className="text-2xl font-bold mb-4">
+    <div className="flex h-[80vh] max-w-4xl flex-col p-6">
+      <h1 className="mb-4 text-2xl font-bold">
         Teacher Messages
       </h1>
 
-      {/* ===================================================
-          💬 CHAT AREA
-      =================================================== */}
-
-      <div className="flex-1 overflow-y-auto bg-gray-50 p-4 rounded space-y-2">
+      <div className="flex-1 space-y-2 overflow-y-auto rounded bg-gray-50 p-4">
         {chatMessages.map((msg) => (
           <div
             key={msg.id}
-            className={`max-w-xs p-2 rounded-lg ${
+            className={`max-w-xs rounded-lg p-2 ${
               msg.sender === "teacher"
-                ? "bg-green-500 text-white ml-auto"
+                ? "ml-auto bg-green-500 text-white"
                 : "bg-gray-200"
             }`}
           >
@@ -81,7 +57,6 @@ export default function Messages() {
           </div>
         ))}
 
-        {/* ⭐ Typing Indicator */}
         {typingUser === "parent" && (
           <p className="text-xs text-gray-500">
             Parent is typing...
@@ -91,17 +66,11 @@ export default function Messages() {
         <div ref={bottomRef} />
       </div>
 
-      {/* ===================================================
-          ✏️ INPUT AREA
-      =================================================== */}
-
-      <div className="flex gap-2 mt-4">
+      <div className="mt-4 flex gap-2">
         <input
           value={text}
           onChange={(e) => {
             setText(e.target.value);
-
-            // show typing status
             setTypingUser("teacher");
 
             setTimeout(() => {
@@ -109,12 +78,12 @@ export default function Messages() {
             }, 800);
           }}
           placeholder="Type message..."
-          className="flex-1 border rounded px-3 py-2"
+          className="flex-1 rounded border px-3 py-2"
         />
 
         <button
           onClick={handleSend}
-          className="bg-green-600 text-white px-4 rounded"
+          className="rounded bg-green-600 px-4 text-white"
         >
           Send
         </button>

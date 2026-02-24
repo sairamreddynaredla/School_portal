@@ -1,9 +1,7 @@
 import { createContext, useContext, useState } from "react";
 
-// 🔐 Create Context
 const AuthContext = createContext();
 
-// Sample user database (mock backend)
 const userDatabase = {
   teacher: {
     id: "T001",
@@ -24,30 +22,32 @@ const userDatabase = {
   },
 };
 
-// 👤 Provider
 export function AuthProvider({ children }) {
-  // Load user from localStorage (persistent login)
   const [user, setUser] = useState(() => {
     try {
       const saved = localStorage.getItem("schoolUser");
+
       if (saved) {
         const parsedUser = JSON.parse(saved);
-        // Validate the user object has required fields
-        if (parsedUser.id && parsedUser.username && parsedUser.role) {
+
+        if (
+          parsedUser.id &&
+          parsedUser.username &&
+          parsedUser.role
+        ) {
           return parsedUser;
         }
       }
-    } catch (e) {
-      // Silently handle error and clear corrupted data
+    } catch {
       localStorage.removeItem("schoolUser");
     }
+
     return null;
   });
 
-  // ✅ Login with credentials
   const login = (username, password) => {
     const userData = userDatabase[username];
-    
+
     if (!userData || userData.password !== password) {
       throw new Error("Invalid username or password");
     }
@@ -63,10 +63,10 @@ export function AuthProvider({ children }) {
 
     setUser(newUser);
     localStorage.setItem("schoolUser", JSON.stringify(newUser));
+
     return newUser;
   };
 
-  // ✅ Logout
   const logout = () => {
     setUser(null);
     localStorage.removeItem("schoolUser");
@@ -79,5 +79,4 @@ export function AuthProvider({ children }) {
   );
 }
 
-// 🪝 Custom Hook
 export const useAuth = () => useContext(AuthContext);

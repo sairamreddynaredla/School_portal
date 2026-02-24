@@ -1,6 +1,3 @@
-// src/services/authService.js
-
-// Fake users (later this will come from backend API)
 const users = [
   {
     id: 1,
@@ -18,7 +15,6 @@ const users = [
   },
 ];
 
-// ✅ Login function (simulate API)
 export const loginUser = async (username, password) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -38,7 +34,6 @@ export const loginUser = async (username, password) => {
   });
 };
 
-// ✅ Logout function
 export const logoutUser = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("user");

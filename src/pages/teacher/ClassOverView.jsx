@@ -1,12 +1,7 @@
 import { useSchool } from "../../context/SchoolContext";
 
 export default function ClassOverView() {
-  // ⭐ Get LIVE students from context (dummy data comes here)
   const { students } = useSchool();
-
-  // ==============================
-  // 📊 CALCULATE CLASS STATS
-  // ==============================
 
   const totalStudents = students.length;
 
@@ -45,19 +40,17 @@ export default function ClassOverView() {
     (s) => (s.performance?.percentage || 0) < 60
   ).length;
 
-  // ==============================
-  // 🎨 UI
-  // ==============================
-
   return (
-    <div className="p-6 max-w-6xl">
-      <h1 className="text-2xl font-bold mb-6">
+    <div className="max-w-6xl p-6">
+      <h1 className="mb-6 text-2xl font-bold">
         Class Overview
       </h1>
 
-      {/* ⭐ TOP STATS */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        <StatCard title="Total Students" value={totalStudents} />
+      <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-4">
+        <StatCard
+          title="Total Students"
+          value={totalStudents}
+        />
 
         <StatCard
           title="Avg Attendance"
@@ -78,17 +71,17 @@ export default function ClassOverView() {
         />
       </div>
 
-      {/* ⭐ TOP PERFORMER */}
-      <div className="bg-blue-50 p-4 rounded mb-8">
-        <h2 className="font-semibold mb-1">
+      <div className="mb-8 rounded bg-blue-50 p-4">
+        <h2 className="mb-1 font-semibold">
           🏆 Top Performer
         </h2>
-        <p className="text-lg font-bold">{topPerformer}</p>
+        <p className="text-lg font-bold">
+          {topPerformer}
+        </p>
       </div>
 
-      {/* ⭐ STUDENT PERFORMANCE LIST */}
-      <div className="bg-white rounded shadow">
-        <h2 className="text-lg font-semibold p-4 border-b">
+      <div className="rounded bg-white shadow">
+        <h2 className="border-b p-4 text-lg font-semibold">
           Student Performance Summary
         </h2>
 
@@ -107,7 +100,7 @@ export default function ClassOverView() {
                 </p>
 
                 <div className="flex items-center gap-4">
-                  <div className="w-40 bg-gray-200 rounded-full h-2">
+                  <div className="h-2 w-40 rounded-full bg-gray-200">
                     <div
                       className={`h-2 rounded-full ${
                         performance >= 75
@@ -133,13 +126,12 @@ export default function ClassOverView() {
   );
 }
 
-/* ==============================
-   ⭐ REUSABLE STAT CARD
-================================*/
 function StatCard({ title, value, color = "" }) {
   return (
-    <div className="bg-white p-4 rounded shadow">
-      <p className="text-gray-500 text-sm">{title}</p>
+    <div className="rounded bg-white p-4 shadow">
+      <p className="text-sm text-gray-500">
+        {title}
+      </p>
       <p className={`text-2xl font-bold ${color}`}>
         {value}
       </p>

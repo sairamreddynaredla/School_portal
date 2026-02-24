@@ -1,17 +1,11 @@
 import { createContext, useContext, useState } from "react";
 import { students as dummyStudents } from "../data/dummydata";
 
-// 🏫 Create School Context
 export const SchoolContext = createContext();
 
-// 📚 School Provider Component
 export function SchoolProvider({ children }) {
   const [students, setStudents] = useState(dummyStudents);
   const [activeStudentId, setActiveStudentId] = useState(1);
-
-  /* ===================================================
-     💬 REAL-TIME CHAT STATE (Parent ↔ Teacher)
-  =================================================== */
 
   const [messages, setMessages] = useState([
     {
@@ -26,10 +20,6 @@ export function SchoolProvider({ children }) {
   const [unreadCount, setUnreadCount] = useState(0);
   const [typingUser, setTypingUser] = useState(null);
 
-  /* ===================================================
-     🔔 GLOBAL ALERTS STATE  ⭐ NEW
-  =================================================== */
-
   const [alerts, setAlerts] = useState([
     {
       id: 1,
@@ -39,10 +29,6 @@ export function SchoolProvider({ children }) {
       time: "Just now",
     },
   ]);
-
-  /* ===================================================
-     ⭐ MAIN UNIVERSAL UPDATE FUNCTION
-  =================================================== */
 
   const updateStudent = (studentId, updates) => {
     setStudents((prevStudents) =>
@@ -58,10 +44,6 @@ export function SchoolProvider({ children }) {
           },
         };
 
-        /* ===================================================
-           📊 AUTO CALCULATE PERFORMANCE (percentage + grade)
-        =================================================== */
-
         if (updates.performance) {
           const performanceValues = Object.entries(
             updatedStudent.performance
@@ -76,7 +58,6 @@ export function SchoolProvider({ children }) {
 
           if (performanceValues.length > 0) {
             const total = performanceValues.reduce((a, b) => a + b, 0);
-
             const percentage = Math.round(
               total / performanceValues.length
             );
@@ -90,10 +71,6 @@ export function SchoolProvider({ children }) {
             updatedStudent.performance.grade = grade;
           }
         }
-
-        /* ===================================================
-           📅 AUTO CALCULATE ATTENDANCE %
-        =================================================== */
 
         if (updates.attendance) {
           const totalDays = updates.attendance.length;
@@ -112,19 +89,11 @@ export function SchoolProvider({ children }) {
     );
   };
 
-  /* ===================================================
-     ⭐ MARKS UPDATE
-  =================================================== */
-
   const updateMarks = (studentId, performanceObject) => {
     updateStudent(studentId, {
       performance: performanceObject,
     });
   };
-
-  /* ===================================================
-     ⭐ ATTENDANCE UPDATE
-  =================================================== */
 
   const markAttendance = (studentId, status) => {
     const today = new Date().toLocaleDateString("en-CA");
@@ -150,10 +119,6 @@ export function SchoolProvider({ children }) {
     );
   };
 
-  /* ===================================================
-     💬 UNIVERSAL CHAT FUNCTION (REAL-TIME)
-  =================================================== */
-
   const sendMessage = (sender, text, studentId) => {
     if (!text.trim()) return;
 
@@ -177,10 +142,6 @@ export function SchoolProvider({ children }) {
     setTypingUser(null);
   };
 
-  /* ===================================================
-     ⭐ CONTEXT VALUE
-  =================================================== */
-
   const value = {
     students,
     activeStudentId,
@@ -188,16 +149,12 @@ export function SchoolProvider({ children }) {
     updateStudent,
     updateMarks,
     markAttendance,
-
-    // 💬 CHAT
     messages,
     sendMessage,
     unreadCount,
     setUnreadCount,
     typingUser,
     setTypingUser,
-
-    // 🔔 ALERTS ⭐ NEW
     alerts,
     setAlerts,
   };
@@ -209,7 +166,6 @@ export function SchoolProvider({ children }) {
   );
 }
 
-// 🪝 Custom Hook
 export const useSchool = () => {
   const context = useContext(SchoolContext);
   if (!context) {

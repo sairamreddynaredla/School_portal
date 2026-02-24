@@ -16,13 +16,12 @@ import {
 } from "lucide-react";
 
 export default function TeacherDashboard() {
-  /* ⭐ SAFE CONTEXT */
   const { students = [] } = useSchool();
 
   const [message, setMessage] = useState("");
   const [sent, setSent] = useState(false);
 
-  /* ⭐ LOW PERFORMERS (SAFE + OPTIMIZED) */
+  /* ⭐ LOW PERFORMERS */
   const lowStudents = useMemo(() => {
     return students.filter(
       (s) => Number(s?.performance?.percentage) < 50
@@ -39,7 +38,7 @@ export default function TeacherDashboard() {
   return (
     <div className="bg-gradient-to-br from-blue-50 via-white to-indigo-50 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-8 space-y-8">
-        
+
         {/* ⭐ HEADER */}
         <div>
           <h1 className="text-4xl font-bold text-gray-900">
@@ -50,7 +49,7 @@ export default function TeacherDashboard() {
           </p>
         </div>
 
-        {/* ⭐ STATS CARDS */}
+        {/* ⭐ STATS */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <StatCard
             title="Total Students"
@@ -125,7 +124,7 @@ export default function TeacherDashboard() {
               </div>
             </div>
 
-            {/* ⭐ STUDENT OVERVIEW */}
+            {/* ⭐ STUDENT OVERVIEW (IMPROVED) */}
             <div className="rounded-lg border bg-white p-6 shadow-sm">
               <div className="flex items-center gap-2 mb-4">
                 <Users className="w-5 h-5 text-green-600" />
@@ -139,10 +138,11 @@ export default function TeacherDashboard() {
                   No students available
                 </p>
               ) : (
-                <div className="overflow-x-auto">
+                /* ⭐ ADDED VERTICAL SCROLL */
+                <div className="overflow-x-auto max-h-72 overflow-y-auto rounded-lg border">
                   <table className="min-w-full text-sm">
-                    <thead>
-                      <tr className="bg-gray-50">
+                    <thead className="bg-gray-50 sticky top-0">
+                      <tr>
                         <th className="px-4 py-2 text-left">Student</th>
                         <th className="px-4 py-2 text-left">Attendance %</th>
                         <th className="px-4 py-2 text-left">Marks %</th>
@@ -150,7 +150,8 @@ export default function TeacherDashboard() {
                     </thead>
 
                     <tbody>
-                      {students.slice(0, 5).map((s) => {
+                      {/* ⭐ SHOW ALL STUDENTS (FIXED HERE) */}
+                      {students.map((s) => {
                         const totalDays = Array.isArray(s.attendance)
                           ? s.attendance.length
                           : 0;
@@ -170,7 +171,10 @@ export default function TeacherDashboard() {
                           s?.performance?.percentage ?? "-";
 
                         return (
-                          <tr key={s.id} className="border-b">
+                          <tr
+                            key={s.id}
+                            className="border-b hover:bg-gray-50 transition"
+                          >
                             <td className="px-4 py-2 font-medium">
                               {s.name}
                             </td>
@@ -264,7 +268,7 @@ export default function TeacherDashboard() {
   );
 }
 
-/* ⭐ STAT CARD COMPONENT */
+/* ⭐ STAT CARD */
 function StatCard({ title, value, icon, color }) {
   const colorClasses = {
     blue: "bg-blue-50 text-blue-600 border-blue-200",

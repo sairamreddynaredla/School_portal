@@ -1,14 +1,6 @@
-/* =========================================================
-   👨‍👩‍👧 PARENT
-========================================================= */
-
 export const parent = {
   name: "Ramesh Kumar",
 };
-
-/* =========================================================
-   🎓 STUDENTS DATA (REALISTIC + BACKEND STYLE)
-========================================================= */
 
 export const students = [
   {
@@ -17,8 +9,6 @@ export const students = [
     gender: "Boy",
     class: "10th Standard – A",
     status: "Present",
-
-    /* ⭐ DAILY ATTENDANCE (Backend normally stores this) */
     attendance: [
       { date: "01 Feb", status: "Present" },
       { date: "02 Feb", status: "Present" },
@@ -26,10 +16,8 @@ export const students = [
       { date: "04 Feb", status: "Present" },
       { date: "05 Feb", status: "Present" },
     ],
-
     attendancePercentage: 80,
     performanceLabel: "Average",
-
     performance: {
       maths: 72,
       physics: 70,
@@ -44,54 +32,33 @@ export const students = [
       percentage: 76,
       grade: "B+",
     },
-
-    // 📄 Sample exam results for demo
     examPapers: [
       {
         exam: "Mid Term Exam 2025",
         papers: [
-          {
-            subject: "Mid Exam 1",
-            file: "MidExam1_2025.pdf"
-          },
-          {
-            subject: "Mid Exam 2",
-            file: "MidExam2_2025.pdf"
-          }
-        ]
+          { subject: "Mid Exam 1", file: "MidExam1_2025.pdf" },
+          { subject: "Mid Exam 2", file: "MidExam2_2025.pdf" },
+        ],
       },
       {
         exam: "Final Exam 2025",
-        papers: [
-          {
-            subject: "Final Exam",
-            file: "FinalExam_2025.pdf"
-          }
-        ]
+        papers: [{ subject: "Final Exam", file: "FinalExam_2025.pdf" }],
       },
       {
         exam: "Slip Test 2025",
         papers: [
-          {
-            subject: "Mathematics",
-            file: "Maths_SlipTest2025.pdf"
-          },
-          {
-            subject: "Science",
-            file: "Science_SlipTest2025.pdf"
-          }
-        ]
-      }
-    ]
+          { subject: "Mathematics", file: "Maths_SlipTest2025.pdf" },
+          { subject: "Science", file: "Science_SlipTest2025.pdf" },
+        ],
+      },
+    ],
   },
-
   {
     id: 2,
     name: "Anita Sharma",
     gender: "Girl",
     class: "9th Standard – B",
     status: "Absent",
-
     attendance: [
       { date: "01 Feb", status: "Present" },
       { date: "02 Feb", status: "Absent" },
@@ -99,10 +66,8 @@ export const students = [
       { date: "04 Feb", status: "Absent" },
       { date: "05 Feb", status: "Present" },
     ],
-
     attendancePercentage: 60,
     performanceLabel: "Good",
-
     performance: {
       maths: 82,
       physics: 80,
@@ -118,14 +83,12 @@ export const students = [
       grade: "A",
     },
   },
-
   {
     id: 3,
     name: "Arjun Reddy",
     gender: "Boy",
     class: "8th Standard – A",
     status: "Present",
-
     attendance: [
       { date: "01 Feb", status: "Present" },
       { date: "02 Feb", status: "Present" },
@@ -133,10 +96,8 @@ export const students = [
       { date: "04 Feb", status: "Present" },
       { date: "05 Feb", status: "Present" },
     ],
-
     attendancePercentage: 100,
     performanceLabel: "Excellent",
-
     performance: {
       maths: 95,
       physics: 94,
@@ -152,14 +113,12 @@ export const students = [
       grade: "A+",
     },
   },
-
   {
     id: 4,
     name: "Sneha Patel",
     gender: "Girl",
     class: "10th Standard – A",
     status: "Present",
-
     attendance: [
       { date: "01 Feb", status: "Present" },
       { date: "02 Feb", status: "Present" },
@@ -167,10 +126,8 @@ export const students = [
       { date: "04 Feb", status: "Absent" },
       { date: "05 Feb", status: "Present" },
     ],
-
     attendancePercentage: 80,
     performanceLabel: "Average",
-
     performance: {
       maths: 65,
       physics: 60,
@@ -186,14 +143,12 @@ export const students = [
       grade: "B",
     },
   },
-
   {
     id: 5,
     name: "Kiran Kumar",
     gender: "Boy",
     class: "9th Standard – B",
     status: "Absent",
-
     attendance: [
       { date: "01 Feb", status: "Absent" },
       { date: "02 Feb", status: "Absent" },
@@ -201,10 +156,8 @@ export const students = [
       { date: "04 Feb", status: "Absent" },
       { date: "05 Feb", status: "Present" },
     ],
-
     attendancePercentage: 40,
     performanceLabel: "Needs Improvement",
-
     performance: {
       maths: 40,
       physics: 38,
@@ -220,14 +173,12 @@ export const students = [
       grade: "C",
     },
   },
-
   {
     id: 6,
     name: "Divya Rani",
     gender: "Girl",
     class: "8th Standard – A",
     status: "Present",
-
     attendance: [
       { date: "01 Feb", status: "Present" },
       { date: "02 Feb", status: "Present" },
@@ -235,10 +186,8 @@ export const students = [
       { date: "04 Feb", status: "Present" },
       { date: "05 Feb", status: "Present" },
     ],
-
     attendancePercentage: 100,
     performanceLabel: "Excellent",
-
     performance: {
       maths: 98,
       physics: 95,
@@ -254,14 +203,12 @@ export const students = [
       grade: "A+",
     },
   },
-
   {
     id: 7,
     name: "Mohit Verma",
     gender: "Boy",
     class: "10th Standard – A",
     status: "Present",
-
     attendance: [
       { date: "01 Feb", status: "Present" },
       { date: "02 Feb", status: "Absent" },
@@ -269,10 +216,8 @@ export const students = [
       { date: "04 Feb", status: "Absent" },
       { date: "05 Feb", status: "Present" },
     ],
-
     attendancePercentage: 60,
     performanceLabel: "Below Average",
-
     performance: {
       maths: 52,
       physics: 48,
@@ -288,14 +233,12 @@ export const students = [
       grade: "C+",
     },
   },
-
   {
     id: 8,
     name: "Lakshmi Devi",
     gender: "Girl",
     class: "9th Standard – B",
     status: "Present",
-
     attendance: [
       { date: "01 Feb", status: "Present" },
       { date: "02 Feb", status: "Present" },
@@ -303,10 +246,8 @@ export const students = [
       { date: "04 Feb", status: "Present" },
       { date: "05 Feb", status: "Present" },
     ],
-
     attendancePercentage: 100,
     performanceLabel: "Very Good",
-
     performance: {
       maths: 89,
       physics: 86,
@@ -323,10 +264,6 @@ export const students = [
     },
   },
 ];
-
-/* =========================================================
-   💬 MESSAGES
-========================================================= */
 
 export const messages = [
   {
@@ -345,11 +282,7 @@ export const messages = [
     replied: true,
     unread: false,
   },
-  
 ];
-/* =========================================================
-   👨‍🏫 TEACHER CLASSES (⭐ NEW - REQUIRED FOR DASHBOARD)
-========================================================= */
 
 export const teacherClasses = [
   {
