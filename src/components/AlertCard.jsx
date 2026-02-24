@@ -1,4 +1,4 @@
-import{ ALERT_CONFIG } from "../constants/alertConfig";
+import{ ALERT_CONFIG } from "../constants/alertconfig";
 
 export default function AlertCard({ alert }) {
   // ✅ Safe fallback prevents undefined crash in build

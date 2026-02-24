@@ -20,7 +20,6 @@ import TeacherPerformance from "./pages/teacher/Performance";
 import TeacherStudents from "./pages/teacher/Students";
 import TeacherMessages from "./pages/teacher/Messages";
 import ClassOverView from "./pages/teacher/ClassOverView";
-import StudentDetails from "./pages/teacher/StudentDetails";
 import Remarks from "./pages/teacher/Remarks";
 
 
@@ -115,7 +114,6 @@ export default function App() {
         <Route path="performance" element={<TeacherPerformance />} />
         <Route path="students" element={<TeacherStudents />} />
         <Route path="student" element={<TeacherStudents />} />
-        <Route path="studentdetails" element={<StudentDetails />} />
         <Route path="remarks" element={<Remarks />} />
         <Route path="messages" element={<TeacherMessages />} />
       </Route>

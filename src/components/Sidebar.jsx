@@ -10,7 +10,6 @@ import {
   MessageSquare,
   Bell,
   AlertTriangle,
-  Users,
 } from "lucide-react";
 
 const notificationCount = 3;
@@ -39,13 +38,12 @@ export default function Sidebar() {
     { name: "Notifications", path: "/notifications", icon: Bell },
   ];
 
-  // 👨‍🏫 Teacher Menu
+  // 👨‍🏫 Teacher Menu (✅ Students removed)
   const teacherMenu = [
     { name: "Dashboard", path: "/teacher/dashboard", icon: LayoutDashboard },
     { name: "Attendance", path: "/teacher/attendance", icon: CalendarCheck },
     { name: "Classes", path: "/teacher/classes", icon: BookOpen },
     { name: "Marks", path: "/teacher/marks", icon: FileText },
-    { name: "Students", path: "/teacher/students", icon: Users },
     { name: "Messages", path: "/teacher/messages", icon: MessageSquare },
   ];
 

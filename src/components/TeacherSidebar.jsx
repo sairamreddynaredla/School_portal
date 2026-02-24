@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import {
@@ -14,7 +13,6 @@ import {
 } from "lucide-react";
 
 export default function TeacherSidebar() {
-  const [isOpen, setIsOpen] = useState(true);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -56,7 +54,6 @@ export default function TeacherSidebar() {
       )}
 
       <nav className="flex flex-col gap-1 text-sm flex-1">
-        {/* ================= OVERVIEW ================= */}
         <Section title="OVERVIEW" />
 
         <NavLink
@@ -69,7 +66,6 @@ export default function TeacherSidebar() {
           Dashboard
         </NavLink>
 
-        {/* ================= CLASSES ================= */}
         <Section title="CLASSES" />
 
         <NavLink
@@ -92,7 +88,6 @@ export default function TeacherSidebar() {
           Class Overview
         </NavLink>
 
-        {/* ================= STUDENTS ================= */}
         <Section title="STUDENTS" />
 
         <NavLink
@@ -105,17 +100,6 @@ export default function TeacherSidebar() {
           Student List
         </NavLink>
 
-        <NavLink
-          to="/teacher/studentdetails"
-          className={({ isActive }) =>
-            `${navItem} ${isActive ? activeStyle : normalStyle}`
-          }
-        >
-          <FileText size={18} />
-          Student Details
-        </NavLink>
-
-        {/* ================= MANAGEMENT ================= */}
         <Section title="MANAGEMENT" />
 
         <NavLink
@@ -158,7 +142,6 @@ export default function TeacherSidebar() {
           Remarks
         </NavLink>
 
-        {/* ================= COMMUNICATION ================= */}
         <Section title="COMMUNICATION" />
 
         <NavLink
@@ -172,7 +155,6 @@ export default function TeacherSidebar() {
         </NavLink>
       </nav>
 
-      {/* ================= LOGOUT ================= */}
       <div className="border-t pt-4">
         <button
           onClick={handleLogout}
@@ -186,7 +168,6 @@ export default function TeacherSidebar() {
   );
 }
 
-/* ===== SMALL SECTION TITLE COMPONENT ===== */
 function Section({ title }) {
   return (
     <p className="mt-4 mb-1 px-2 text-xs font-semibold text-gray-400">

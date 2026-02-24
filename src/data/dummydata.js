@@ -345,4 +345,65 @@ export const messages = [
     replied: true,
     unread: false,
   },
+  
+];
+/* =========================================================
+   👨‍🏫 TEACHER CLASSES (⭐ NEW - REQUIRED FOR DASHBOARD)
+========================================================= */
+
+export const teacherClasses = [
+  {
+    id: 1,
+    teacherId: "T001",
+    subject: "Math",
+    grade: 6,
+    className: "8th Standard – A",
+    time: "10:00 AM",
+    day: "Monday",
+  },
+  {
+    id: 2,
+    teacherId: "T001",
+    subject: "Science",
+    grade: 7,
+    className: "9th Standard – B",
+    time: "11:30 AM",
+    day: "Monday",
+  },
+  {
+    id: 3,
+    teacherId: "T001",
+    subject: "English",
+    grade: 8,
+    className: "10th Standard – A",
+    time: "2:00 PM",
+    day: "Monday",
+  },
+  {
+    id: 4,
+    teacherId: "T001",
+    subject: "Physics",
+    grade: 9,
+    className: "9th Standard – B",
+    time: "9:00 AM",
+    day: "Monday",
+  },
+  {
+    id: 5,
+    teacherId: "T001",
+    subject: "Chemistry",
+    grade: 10,
+    className: "10th Standard – A",
+    time: "12:00 PM",
+    day: "Monday",
+  },
+  {
+    id: 6,
+    teacherId: "T001",
+    subject: "Biology",
+    grade: 6,
+    className: "8th Standard – A",
+    time: "3:30 PM",
+    day: "Monday",
+  },
 ];
