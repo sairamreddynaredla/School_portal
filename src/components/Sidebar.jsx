@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import useAuth from "../context/useAuth"; // ✅ CORRECT IMPORT
 import {
   LayoutDashboard,
   CalendarCheck,
@@ -12,36 +12,38 @@ import {
   AlertTriangle,
 } from "lucide-react";
 
-const notificationCount = 3;
-
-const navClass = ({ isActive }) =>
-  `flex items-center gap-3 px-4 py-2 rounded transition ${
-    isActive
-      ? "bg-blue-600 text-white"
-      : "text-gray-700 hover:bg-blue-100"
-  }`;
-
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(true);
   const { user } = useAuth();
 
+  const notificationCount = 3;
+
+  const navClass = ({ isActive }) =>
+    `flex items-center gap-3 px-4 py-2 rounded transition ${
+      isActive
+        ? "bg-blue-600 text-white"
+        : "text-gray-700 hover:bg-blue-100"
+    }`;
+
+  /* ================= PARENT MENU ================= */
   const parentMenu = [
-    { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-    { name: "Attendance", path: "/attendance", icon: CalendarCheck },
-    { name: "Weekly Progress", path: "/weekly-progress", icon: TrendingUp },
-    { name: "Marksheet", path: "/marksheet", icon: FileText },
-    { name: "Alerts", path: "/parent/alerts", icon: AlertTriangle },
-    { name: "Exam Result", path: "/exam-result", icon: BookOpen },
-    { name: "Messages", path: "/messages", icon: MessageSquare },
-    { name: "Notifications", path: "/notifications", icon: Bell },
+    { name: "Dashboard", path: "dashboard", icon: LayoutDashboard },
+    { name: "Attendance", path: "attendance", icon: CalendarCheck },
+    { name: "Weekly Progress", path: "weekly-progress", icon: TrendingUp },
+    { name: "Marksheet", path: "marksheet", icon: FileText },
+    { name: "Alerts", path: "alerts", icon: AlertTriangle },
+    { name: "Exam Result", path: "exam-result", icon: BookOpen },
+    { name: "Messages", path: "messages", icon: MessageSquare },
+    { name: "Notifications", path: "notifications", icon: Bell },
   ];
 
+  /* ================= TEACHER MENU ================= */
   const teacherMenu = [
-    { name: "Dashboard", path: "/teacher/dashboard", icon: LayoutDashboard },
-    { name: "Attendance", path: "/teacher/attendance", icon: CalendarCheck },
-    { name: "Classes", path: "/teacher/classes", icon: BookOpen },
-    { name: "Marks", path: "/teacher/marks", icon: FileText },
-    { name: "Messages", path: "/teacher/messages", icon: MessageSquare },
+    { name: "Dashboard", path: "dashboard", icon: LayoutDashboard },
+    { name: "Attendance", path: "attendance", icon: CalendarCheck },
+    { name: "Classes", path: "classes", icon: BookOpen },
+    { name: "Marks", path: "marks", icon: FileText },
+    { name: "Messages", path: "messages", icon: MessageSquare },
   ];
 
   const menuItems =
@@ -53,6 +55,7 @@ export default function Sidebar() {
         isOpen ? "w-64" : "w-20"
       }`}
     >
+      {/* HEADER */}
       <div className="flex items-center justify-between border-b p-4">
         {isOpen && (
           <h2 className="text-xl font-bold">
@@ -70,6 +73,7 @@ export default function Sidebar() {
         </button>
       </div>
 
+      {/* USER INFO */}
       {isOpen && user?.name && (
         <div className="border-b bg-blue-50 p-4">
           <div className="mb-2 flex items-center gap-3">
@@ -89,6 +93,7 @@ export default function Sidebar() {
         </div>
       )}
 
+      {/* NAVIGATION */}
       <nav className="flex-1 space-y-1 p-2">
         {menuItems.map((item) => {
           const Icon = item.icon;
@@ -96,7 +101,6 @@ export default function Sidebar() {
           return (
             <NavLink key={item.name} to={item.path} className={navClass}>
               <Icon size={18} />
-
               {isOpen && <span className="flex-1">{item.name}</span>}
 
               {item.name === "Notifications" &&

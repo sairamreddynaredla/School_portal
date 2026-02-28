@@ -25,11 +25,12 @@ export function SchoolProvider({ children }) {
       id: 1,
       type: "info",
       title: "Attendance Updated",
-      message: "Rahul marked present today",
+      message: "Student marked present today",
       time: "Just now",
     },
   ]);
 
+  /* ⭐ UPDATE STUDENT */
   const updateStudent = (studentId, updates) => {
     setStudents((prevStudents) =>
       prevStudents.map((student) => {
@@ -44,59 +45,24 @@ export function SchoolProvider({ children }) {
           },
         };
 
-        if (updates.performance) {
-          const performanceValues = Object.entries(
-            updatedStudent.performance
-          )
-            .filter(
-              ([key, value]) =>
-                key !== "percentage" &&
-                key !== "grade" &&
-                typeof value === "number"
-            )
-            .map(([, value]) => value);
-
-          if (performanceValues.length > 0) {
-            const total = performanceValues.reduce((a, b) => a + b, 0);
-            const percentage = Math.round(
-              total / performanceValues.length
-            );
-
-            let grade = "C";
-            if (percentage >= 90) grade = "A+";
-            else if (percentage >= 75) grade = "A";
-            else if (percentage >= 60) grade = "B";
-
-            updatedStudent.performance.percentage = percentage;
-            updatedStudent.performance.grade = grade;
-          }
-        }
-
-        if (updates.attendance) {
-          const totalDays = updates.attendance.length;
-          const presentDays = updates.attendance.filter(
-            (a) => a.status === "Present"
-          ).length;
-
-          updatedStudent.attendancePercentage =
-            totalDays > 0
-              ? Math.round((presentDays / totalDays) * 100)
-              : 0;
-        }
-
         return updatedStudent;
       })
     );
   };
 
+  /* ⭐ UPDATE MARKS */
   const updateMarks = (studentId, performanceObject) => {
     updateStudent(studentId, {
       performance: performanceObject,
     });
   };
 
+  /* ⭐ MARK ATTENDANCE (MATCH DUMMYDATA FORMAT) */
   const markAttendance = (studentId, status) => {
-    const today = new Date().toLocaleDateString("en-CA");
+    const today = new Date().toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+    });
 
     setStudents((prevStudents) =>
       prevStudents.map((student) => {
@@ -119,6 +85,7 @@ export function SchoolProvider({ children }) {
     );
   };
 
+  /* ⭐ SEND MESSAGE */
   const sendMessage = (sender, text, studentId) => {
     if (!text.trim()) return;
 

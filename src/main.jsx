@@ -4,7 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import "./index.css";
 import { SchoolProvider } from "./context/SchoolContext";
-import { AuthProvider } from "./context/AuthContext";
+import AuthProvider from "./context/AuthContext"; // ✅ FIXED (no {})
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

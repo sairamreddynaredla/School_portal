@@ -1,8 +1,16 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 const userDatabase = {
+  admin: {
+    id: "A001",
+    username: "admin",
+    password: "123",
+    name: "School Admin",
+    role: "admin",
+    email: "admin@school.com",
+  },
   teacher: {
     id: "T001",
     username: "teacher",
@@ -22,35 +30,34 @@ const userDatabase = {
   },
 };
 
-export function AuthProvider({ children }) {
-  const [user, setUser] = useState(() => {
+export default function AuthProvider({ children }) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
     try {
-      const saved = localStorage.getItem("schoolUser");
-
-      if (saved) {
-        const parsedUser = JSON.parse(saved);
-
-        if (
-          parsedUser.id &&
-          parsedUser.username &&
-          parsedUser.role
-        ) {
-          return parsedUser;
+      const savedUser = localStorage.getItem("schoolUser");
+      if (savedUser) {
+        const parsedUser = JSON.parse(savedUser);
+        if (parsedUser?.id && parsedUser?.role) {
+          setUser(parsedUser);
         }
       }
     } catch {
       localStorage.removeItem("schoolUser");
+    } finally {
+      setLoading(false);
     }
-
-    return null;
-  });
+  }, []);
 
   const login = (username, password) => {
-    const userData = userDatabase[username];
+    const userData = Object.values(userDatabase).find(
+      (u) =>
+        u.username.toLowerCase() === username.toLowerCase() &&
+        u.password === password
+    );
 
-    if (!userData || userData.password !== password) {
-      throw new Error("Invalid username or password");
-    }
+    if (!userData) throw new Error("Invalid username or password");
 
     const newUser = {
       id: userData.id,
@@ -58,7 +65,7 @@ export function AuthProvider({ children }) {
       name: userData.name,
       role: userData.role,
       email: userData.email,
-      ...(userData.subject && { subject: userData.subject }),
+      subject: userData.subject || null,
     };
 
     setUser(newUser);
@@ -73,10 +80,11 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
+/* Keep useAuth here so you don't edit other files */
 export const useAuth = () => useContext(AuthContext);

@@ -16,6 +16,15 @@ import Notifications from "./Notifications";
 export default function ParentDashboard() {
   const student = useActiveStudent();
 
+  /* ⭐ HELPER → CALCULATE GRADE */
+  const getGrade = (percentage) => {
+    if (percentage >= 90) return "A+";
+    if (percentage >= 80) return "A";
+    if (percentage >= 70) return "B";
+    if (percentage >= 60) return "C";
+    return "D";
+  };
+
   const stats = useMemo(() => {
     if (!student) {
       return {
@@ -26,9 +35,10 @@ export default function ParentDashboard() {
       };
     }
 
-    const performance = student?.performance || {};
+    const performance = student?.performance || [];
     const attendanceData = student?.attendance || [];
 
+    /* Attendance Calculation */
     const presentCount = attendanceData.filter(
       (a) => a.status === "Present"
     ).length;
@@ -40,23 +50,25 @@ export default function ParentDashboard() {
           )
         : 0;
 
-    const subjects = Object.entries(performance).filter(
-      ([key]) => key !== "percentage" && key !== "grade"
+    /* Marks Calculation (NEW ERP STYLE) */
+    const totalMarks = performance.reduce(
+      (sum, subject) => sum + subject.marksObtained,
+      0
     );
 
     const avgMarks =
-      subjects.length > 0
-        ? Math.round(
-            subjects.reduce((sum, [, val]) => sum + val, 0) /
-              subjects.length
-          )
+      performance.length > 0
+        ? Math.round(totalMarks / performance.length)
         : 0;
+
+    const overallGrade = getGrade(avgMarks);
 
     return {
       attendance: attendancePercent,
-      overallGrade: performance.grade || "-",
+      overallGrade,
       avgMarks,
-      recentAlerts: 2,
+      recentAlerts:
+        attendancePercent < 75 || avgMarks < 60 ? 1 : 0,
     };
   }, [student]);
 
@@ -79,7 +91,7 @@ export default function ParentDashboard() {
   };
 
   const getGradeColor = (grade) => {
-    if (grade === "A") return "text-blue-600 bg-blue-50";
+    if (grade.startsWith("A")) return "text-blue-600 bg-blue-50";
     if (grade === "B") return "text-green-600 bg-green-50";
     if (grade === "C") return "text-yellow-600 bg-yellow-50";
     return "text-red-600 bg-red-50";
@@ -93,121 +105,104 @@ export default function ParentDashboard() {
             Welcome Back!
           </h1>
           <p className="mt-2 text-gray-600">
-            Here's an overview of {student?.name}'s academic
-            performance
+            Here's an overview of {student?.name}'s academic performance
           </p>
         </div>
 
+        {/* STATS */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-          <div
-            className={`rounded-lg border p-6 shadow-sm transition-all hover:shadow-md ${getAttendanceColor(
-              stats.attendance
-            )}`}
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium opacity-80">
-                  Attendance
-                </p>
-                <p className="mt-2 text-3xl font-bold">
-                  {stats.attendance}%
-                </p>
-              </div>
-              <Clock className="h-12 w-12 opacity-20" />
-            </div>
-          </div>
 
-          <div
-            className={`rounded-lg border p-6 shadow-sm transition-all hover:shadow-md ${getGradeColor(
-              stats.overallGrade
-            )}`}
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium opacity-80">
-                  Overall Grade
-                </p>
-                <p className="mt-2 text-3xl font-bold">
-                  {stats.overallGrade}
-                </p>
-              </div>
-              <Award className="h-12 w-12 opacity-20" />
-            </div>
-          </div>
+          <StatCard
+            title="Attendance"
+            value={`${stats.attendance}%`}
+            icon={<Clock className="h-12 w-12 opacity-20" />}
+            colorClass={getAttendanceColor(stats.attendance)}
+          />
 
-          <div className="rounded-lg border bg-purple-50 p-6 text-purple-600 shadow-sm transition-all hover:shadow-md">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium opacity-80">
-                  Average Score
-                </p>
-                <p className="mt-2 text-3xl font-bold">
-                  {stats.avgMarks}%
-                </p>
-              </div>
-              <BarChart3 className="h-12 w-12 opacity-20" />
-            </div>
-          </div>
+          <StatCard
+            title="Overall Grade"
+            value={stats.overallGrade}
+            icon={<Award className="h-12 w-12 opacity-20" />}
+            colorClass={getGradeColor(stats.overallGrade)}
+          />
 
-          <div className="rounded-lg border bg-orange-50 p-6 text-orange-600 shadow-sm transition-all hover:shadow-md">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium opacity-80">
-                  Recent Updates
-                </p>
-                <p className="mt-2 text-3xl font-bold">
-                  {stats.recentAlerts}
-                </p>
-              </div>
-              <AlertCircle className="h-12 w-12 opacity-20" />
-            </div>
-          </div>
+          <StatCard
+            title="Average Score"
+            value={`${stats.avgMarks}%`}
+            icon={<BarChart3 className="h-12 w-12 opacity-20" />}
+            colorClass="bg-purple-50 text-purple-600"
+          />
+
+          <StatCard
+            title="Recent Alerts"
+            value={stats.recentAlerts}
+            icon={<AlertCircle className="h-12 w-12 opacity-20" />}
+            colorClass="bg-orange-50 text-orange-600"
+          />
+
         </div>
 
+        {/* MAIN CONTENT */}
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           <div className="space-y-6 lg:col-span-2">
-            <div className="rounded-lg border bg-white p-6 shadow-sm">
-              <div className="mb-4 flex items-center gap-2">
-                <Clock className="h-5 w-5 text-blue-600" />
-                <h2 className="text-lg font-semibold text-gray-900">
-                  Attendance Overview
-                </h2>
-              </div>
-              <AttendanceCalendar />
-            </div>
 
-            <div className="rounded-lg border bg-white p-6 shadow-sm">
-              <div className="mb-4 flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-green-600" />
-                <h2 className="text-lg font-semibold text-gray-900">
-                  Performance Trends
-                </h2>
-              </div>
+            <Card title="Attendance Overview" icon={<Clock className="h-5 w-5 text-blue-600" />}>
+              <AttendanceCalendar />
+            </Card>
+
+            <Card title="Performance Trends" icon={<TrendingUp className="h-5 w-5 text-green-600" />}>
               <WeeklyProgress />
-            </div>
+            </Card>
+
           </div>
 
           <div className="space-y-6 lg:sticky lg:top-8 lg:h-fit">
-            <div className="overflow-hidden rounded-lg border bg-white shadow-sm">
+            <Card>
               <Notifications />
-            </div>
+            </Card>
 
-            <div className="overflow-hidden rounded-lg border bg-white shadow-sm">
+            <Card>
               <Messages />
-            </div>
+            </Card>
           </div>
         </div>
 
-        <div className="rounded-lg border bg-white p-6 shadow-sm">
-          <div className="mb-4 flex items-center gap-2">
-            <Award className="h-5 w-5 text-purple-600" />
-            <h2 className="text-lg font-semibold text-gray-900">
-              Academic Records
-            </h2>
-          </div>
+        <Card title="Academic Records" icon={<Award className="h-5 w-5 text-purple-600" />}>
           <Marksheet />
-        </div>
+        </Card>
       </div>
+    </div>
+  );
+}
+
+/* SMALL COMPONENTS */
+
+function StatCard({ title, value, icon, colorClass }) {
+  return (
+    <div className={`rounded-lg border p-6 shadow-sm transition-all hover:shadow-md ${colorClass}`}>
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-sm font-medium opacity-80">{title}</p>
+          <p className="mt-2 text-3xl font-bold">{value}</p>
+        </div>
+        {icon}
+      </div>
+    </div>
+  );
+}
+
+function Card({ title, icon, children }) {
+  return (
+    <div className="rounded-lg border bg-white p-6 shadow-sm">
+      {title && (
+        <div className="mb-4 flex items-center gap-2">
+          {icon}
+          <h2 className="text-lg font-semibold text-gray-900">
+            {title}
+          </h2>
+        </div>
+      )}
+      {children}
     </div>
   );
 }

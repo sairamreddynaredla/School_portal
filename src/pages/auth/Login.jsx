@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAuth } from "../../context/AuthContext";
+import useAuth from "../../context/useAuth"; // ✅ Correct import
 import { useNavigate } from "react-router-dom";
 import { AlertCircle, LogIn } from "lucide-react";
 
@@ -18,9 +18,22 @@ export default function Login() {
     setLoading(true);
 
     try {
+      // Fake delay for UI effect
       await new Promise((resolve) => setTimeout(resolve, 500));
-      login(username, password);
-      navigate("/");
+
+      const user = login(username, password);
+
+      // Redirect based on role
+      if (user.role === "admin") {
+        navigate("/admin");
+      } else if (user.role === "teacher") {
+        navigate("/teacher");
+      } else if (user.role === "parent") {
+        navigate("/parent");
+      } else {
+        navigate("/");
+      }
+
     } catch (err) {
       setError(err.message);
       setPassword("");
@@ -33,6 +46,8 @@ export default function Login() {
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-100 to-blue-200">
       <div className="w-full max-w-md">
         <div className="rounded-2xl border border-slate-200 bg-white/90 p-10 shadow-2xl backdrop-blur-md">
+          
+          {/* Header */}
           <div className="mb-8 flex flex-col items-center">
             <img
               src="/SCHOOL.png"
@@ -47,8 +62,9 @@ export default function Login() {
             </p>
           </div>
 
+          {/* Error Message */}
           {error && (
-            <div className="mb-6 flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 animate-shake">
+            <div className="mb-6 flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4">
               <AlertCircle
                 className="mt-0.5 flex-shrink-0 text-red-600"
                 size={20}
@@ -62,6 +78,7 @@ export default function Login() {
             </div>
           )}
 
+          {/* Form */}
           <form onSubmit={handleLogin} className="space-y-6">
             <div>
               <label className="mb-2 block text-sm font-semibold text-slate-700">
@@ -69,7 +86,7 @@ export default function Login() {
               </label>
               <input
                 type="text"
-                placeholder="Username (teacher / parent)"
+                placeholder="admin / teacher / parent"
                 className="w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2 shadow-sm outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-400"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
@@ -85,7 +102,7 @@ export default function Login() {
               </label>
               <input
                 type="password"
-                placeholder="Password (123)"
+                placeholder="123"
                 className="w-full rounded-lg border border-slate-300 bg-slate-50 px-4 py-2 shadow-sm outline-none transition focus:border-transparent focus:ring-2 focus:ring-blue-400"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -117,51 +134,19 @@ export default function Login() {
             </button>
           </form>
 
+          {/* Demo Credentials */}
           <div className="mt-10 border-t border-slate-200 pt-6">
             <p className="mb-3 text-sm font-semibold text-slate-500">
               Demo Credentials
             </p>
 
-            <div className="flex flex-col gap-2 text-sm">
-              <div className="flex items-center gap-3 rounded-lg border border-blue-100 bg-blue-50 p-3">
-                <span className="text-lg text-blue-700">👨‍🏫</span>
-                <span className="font-medium text-slate-800">
-                  Teacher
-                </span>
-                <span className="ml-auto text-slate-600">
-                  Username:{" "}
-                  <code className="rounded border bg-white px-2 py-1">
-                    teacher
-                  </code>
-                </span>
-                <span className="text-slate-600">
-                  Password:{" "}
-                  <code className="rounded border bg-white px-2 py-1">
-                    123
-                  </code>
-                </span>
-              </div>
-
-              <div className="flex items-center gap-3 rounded-lg border border-green-100 bg-green-50 p-3">
-                <span className="text-lg text-green-700">👨‍👩‍👧</span>
-                <span className="font-medium text-slate-800">
-                  Parent
-                </span>
-                <span className="ml-auto text-slate-600">
-                  Username:{" "}
-                  <code className="rounded border bg-white px-2 py-1">
-                    parent
-                  </code>
-                </span>
-                <span className="text-slate-600">
-                  Password:{" "}
-                  <code className="rounded border bg-white px-2 py-1">
-                    123
-                  </code>
-                </span>
-              </div>
+            <div className="space-y-2 text-sm">
+              <div>Admin → admin / 123</div>
+              <div>Teacher → teacher / 123</div>
+              <div>Parent → parent / 123</div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
