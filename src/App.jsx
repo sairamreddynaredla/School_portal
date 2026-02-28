@@ -7,7 +7,7 @@ import Login from "./pages/auth/Login";
 /* ================= LAYOUTS ================= */
 import DashboardLayout from "./layouts/DashboardLayout";
 import TeacherLayout from "./layouts/TeacherLayout";
-import AdminLayout from "./layouts/AdminLayout"; // ✅ FIXED PATH
+import AdminLayout from "./layouts/AdminLayout";
 
 /* ================= ADMIN ================= */
 import Dashboard from "./pages/admin/dashboard/Dashboard";
@@ -33,7 +33,7 @@ import TeacherMarks from "./pages/teacher/Marks";
 import TeacherPerformance from "./pages/teacher/Performance";
 import TeacherStudents from "./pages/teacher/Students";
 import TeacherMessages from "./pages/teacher/Messages";
-import ClassOverview from "./pages/teacher/ClassOverview";
+import ClassOverview from "./pages/teacher/ClassOverview"; // ✅ FIXED
 import Remarks from "./pages/teacher/Remarks";
 
 /* ================= PROTECTED ROUTE ================= */
@@ -104,7 +104,7 @@ export default function App() {
         <Route path="alerts" element={<Alerts />} />
         <Route path="exam-result" element={<ExamResult />} />
         <Route path="messages" element={<Messages />} />
-        <Route path="notifications" element={<Notifications />} /> 
+        <Route path="notifications" element={<Notifications />} />
       </Route>
 
       {/* ================= TEACHER ================= */}
